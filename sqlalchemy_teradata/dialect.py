@@ -262,11 +262,12 @@ class TeradataDialect(default.DefaultDialect):
         return [self.normalize_name(name['tablename']) for name in res]
 
     def get_schema_names(self, connection, **kw):
-            stmt = select([column('DatabaseName')],
-                   from_obj=[text('dbc.Databases2V')],
-                   order_by=[text('DatabaseName')])
-            res = connection.execute(stmt).fetchall()
-            return [self.normalize_name(name['DatabaseName']) for name in res]
+        """Retrieves names of Databases/Schemas on the system"""
+        stmt = select([column('DatabaseName')],
+               from_obj=[text('dbc.Databases2V')],
+               order_by=[text('DatabaseName')])
+        res = connection.execute(stmt).fetchall()
+        return [self.normalize_name(name['DatabaseName']) for name in res]
 
 
     def get_view_definition(self, connection, view_name, schema=None, **kw):
